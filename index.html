@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PYTHON</title>
+  <link rel="stylesheet" href="estilo.css">     
+</head>
+<body>
+
+  <nav>
+    <div class="nav-title"></div>
+    <button class="menu-button" onclick="toggleMenu()">☰ Menú</button>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="pagina 1.html">¿Qué es Python?</a>
+      <a href="pagina 2.html">Características y paradigmas</a>
+      <a href="Mini juego.html">Mini juego</a>
+    </div>
+  </nav>
+
+  <main>  
+    <h1>¿Qué es Python?</h1>
+    <h2>
+      Python es un lenguaje de programación de alto nivel, interpretado, de propósito general y con una sintaxis clara y legible, ideal para principiantes y expertos. Se utiliza en una variedad de campos, incluyendo desarrollo web, ciencia de datos, machine learning, y más. Su facilidad de aprendizaje y su amplia gama de aplicaciones lo convierten en una herramienta popular tanto para la educación como para la industria.
+    </h2>
+  </main> 
+
+  <footer>
+    <p>&copy; 2025 Edgardo-Kevin-Maide-Andy | Sitio educativo</p>
+  </footer>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    window.onclick = function(event) {
+      const menu = document.getElementById('dropdownMenu');
+      const button = document.querySelector('.menu-button');
+      if (!menu.contains(event.target) && !button.contains(event.target)) {
+        menu.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
