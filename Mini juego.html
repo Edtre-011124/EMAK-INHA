@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atrapa al logo de Python</title>
+  <link rel="stylesheet" href="estilo.css">  
+  <link rel="stylesheet" href="Mini juego.css">    
+</head>
+<body>
+</head>
+<body>
+<div id="intro">
+  <h1>¡Atrapa al Logo de Python!</h1>
+  <p>Tenés <strong>30 segundos</strong> para atrapar <strong>25 logos de Python</strong>.</p>
+  <p>Hacé clic sobre los logos lo más rápido que podás. ¡Buena suerte!</p>
+  <button onclick="startGame()">¡Empezar!</button>
+</div>
+
+<div id="score">Puntos: 0</div>
+<div id="timer">Tiempo: 30s</div>
+<div id="game-over"></div>
+
+<script>
+  const scoreDisplay = document.getElementById("score");
+  const timerDisplay = document.getElementById("timer");
+  const gameOverDisplay = document.getElementById("game-over");
+  const introScreen = document.getElementById("intro");
+
+  let score = 0;
+  let timeLeft = 30;
+  const goal = 25;
+  let gameInterval;
+  let timer;
+
+  function createLogo() {
+    if (score >= goal) return;
+
+    const logo = document.createElement("img");
+    logo.src = "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg";
+    logo.className = "logo";
+
+    const x = Math.random() * (window.innerWidth - 60);
+    const y = Math.random() * (window.innerHeight - 60);
+    logo.style.left = `${x}px`;
+    logo.style.top = `${y}px`;
+
+    logo.addEventListener("click", () => {
+      score++;
+      scoreDisplay.textContent = `Puntos: ${score}`;
+      logo.remove();
+
+      if (score >= goal) {
+        endGame(true);
+      }
+    });
+
+    document.body.appendChild(logo);
+
+    setTimeout(() => {
+      if (document.body.contains(logo)) { // Verifica si el logo aún está en el DOM antes de intentar removerlo
+        logo.remove();
+      }
+    }, 2000);
+  }
+
+  function endGame(won) {
+    clearInterval(gameInterval);
+    clearInterval(timer);
+    document.querySelectorAll(".logo").forEach(logo => logo.remove());
+
+    const message = won
+      ? `🎉 ¡Ganaste! Atrapaste ${score} logos en ${30 - timeLeft}s.`
+      : `😞 Se acabó el tiempo. Solo atrapaste ${score} de ${goal} logos.`;
+
+    gameOverDisplay.innerHTML = `
+      <p>${message}</p>
+      <button onclick="restartGame()">Reiniciar</button>
+      <button onclick="goToHome()">Ir al Inicio</button> `;
+    gameOverDisplay.style.display = "block";
+  }
+
+  function startGame() {
+    introScreen.style.display = "none";
+    score = 0;
+    timeLeft = 30;
+    scoreDisplay.textContent = `Puntos: ${score}`;
+    timerDisplay.textContent = `Tiempo: ${timeLeft}s`;
+    gameOverDisplay.style.display = "none";
+
+    gameInterval = setInterval(createLogo, 800);
+    timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = `Tiempo: ${timeLeft}s`;
+
+      if (timeLeft === 0 && score < goal) {
+        endGame(false);
+      }
+    }, 1000);
+  }
+
+  function restartGame() {
+    score = 0;
+    timeLeft = 30;
+    scoreDisplay.textContent = `Puntos: ${score}`;
+    timerDisplay.textContent = `Tiempo: ${timeLeft}s`;
+    gameOverDisplay.style.display = "none";
+
+    // Clear existing intervals before starting new ones to prevent multiple running
+    clearInterval(gameInterval);
+    clearInterval(timer);
+
+    gameInterval = setInterval(createLogo, 800);
+    timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = `Tiempo: ${timeLeft}s`;
+
+      if (timeLeft === 0 && score < goal) {
+        endGame(false);
+      }
+    }, 1000);
+  }
+
+
+  function goToHome() {
+    window.location = "index.html"; 
+  }
+</script>
+<script>
+    function toggleMenu() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    window.onclick = function(event) {
+      const menu = document.getElementById('dropdownMenu');
+      const button = document.querySelector('.menu-button');
+      if (!menu.contains(event.target) && !button.contains(event.target)) {
+        menu.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
